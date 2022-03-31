@@ -67,4 +67,12 @@ int fibonacci(int n) {
 
 /*也可以像这样使用单斜杠和星号的注释方式*/
 
+//类（class），https://dart.cn/samples#classes
+class Spacecraft{
+  String name;
+  DateTime?launchDate;
 
+  //Read-only non-final property
+  int?get launchYear => launchDate?.year;
+
+}
