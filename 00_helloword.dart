@@ -17,4 +17,12 @@ void varible(){
   print('$name,$year,$antennaDiameter,$flybyObjects,$image');
 }
 
-//
+//流程控制语句 https://dart.cn/samples#control-flow-statements
+void control_flow_statements(){
+  if(year>=2001){
+    print('21st century');
+  }else if(year>=1901) {
+    print('20th century');
+  }
+  
+}
