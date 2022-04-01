@@ -68,11 +68,31 @@ int fibonacci(int n) {
 /*也可以像这样使用单斜杠和星号的注释方式*/
 
 //类（class），https://dart.cn/samples#classes
-class Spacecraft{
+class Spacecraft {
   String name;
-  DateTime?launchDate;
+  DateTime? launchDate;
 
-  //Read-only non-final property
-  int?get launchYear => launchDate?.year;
+  // Read-only non-final property
+  int? get launchYear => launchDate?.year;
 
+  // Constructor, with syntactic sugar for assignment to members.
+  Spacecraft(this.name, this.launchDate) {
+    // Initialization code goes here.
+  }
+
+  // Named constructor that forwards to the default one.
+  Spacecraft.unlaunched(String name) : this(name, null);
+
+  // Method.
+  void describe() {
+    print('Spacecraft: $name');
+    // Type promotion doesn't work on getters.
+    var launchDate = this.launchDate;
+    if (launchDate != null) {
+      int years = DateTime.now().difference(launchDate).inDays ~/ 365;
+      print('Launched: $launchYear ($years years ago)');
+    } else {
+      print('Unlaunched');
+    }
+  }
 }
