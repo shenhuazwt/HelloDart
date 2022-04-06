@@ -12,6 +12,12 @@ void main() {
   varible();
   var result = fibonacci(20);
   print('fibonacci(20)=$result');
+
+  var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
+  voyager.describe();
+  var voyager3 = Spacecraft.unlaunched('Voyager III');
+  voyager3.describe();
+  print('a');
 }
 
 //变量，https://dart.cn/samples#variables
@@ -95,4 +101,12 @@ class Spacecraft {
       print('Unlaunched');
     }
   }
+}
+
+//扩展类（继承），https://dart.cn/samples#inheritance
+class Orbiter extends Spacecraft {
+  double altitude;
+
+  Orbiter(String name, DateTime launchDate, this.altitude)
+      : super(name, launchDate);
 }
