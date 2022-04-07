@@ -1,6 +1,6 @@
 //导入（Import），https://dart.cn/samples#imports
 // Importing core libraries
-import 'dart:math';
+//import 'dart:math';
 // Importing libraries from external packages
 //import 'package:test/test.dart';
 // Importing files
@@ -13,6 +13,7 @@ void main() {
   var result = fibonacci(20);
   print('fibonacci(20)=$result');
 
+  print('类的使用！');
   var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
   voyager.describe();
   var voyager3 = Spacecraft.unlaunched('Voyager III');
@@ -20,7 +21,7 @@ void main() {
   print('a');
 }
 
-//变量，https://dart.cn/samples#variables
+//变量均适合使用var，https://dart.cn/samples#variables
 void varible() {
   var name = 'Voyager I';
   var year = 1977;
@@ -63,6 +64,7 @@ int fibonacci(int n) {
 //var result = fibonacci(20);在main函数里面调用
 
 //=> (胖箭头) 简写语法用于仅包含一条语句的函数。该语法在将匿名函数作为参数传递时非常有用
+///下面的where内容是做筛选内容出来，再进行打印
 //flybyObjects.where((name)=>name.contains('turn')).forEach(print);
 
 //注释https://dart.cn/samples#comments
@@ -74,9 +76,10 @@ int fibonacci(int n) {
 /*也可以像这样使用单斜杠和星号的注释方式*/
 
 //类（class），https://dart.cn/samples#classes
+//类是归纳出来，先有对象，后有类
 class Spacecraft {
   String name;
-  DateTime? launchDate;
+  DateTime? launchDate;//‘？’用来让空不报错，不一定有，所以要防止报错
 
   // Read-only non-final property
   int? get launchYear => launchDate?.year;
@@ -84,6 +87,7 @@ class Spacecraft {
   // Constructor, with syntactic sugar for assignment to members.
   Spacecraft(this.name, this.launchDate) {
     // Initialization code goes here.
+    //TODO ,这个表示还没处理，用来提醒还没有写完的意思
   }
 
   // Named constructor that forwards to the default one.
@@ -95,7 +99,7 @@ class Spacecraft {
     // Type promotion doesn't work on getters.
     var launchDate = this.launchDate;
     if (launchDate != null) {
-      int years = DateTime.now().difference(launchDate).inDays ~/ 365;
+      int years = DateTime.now().difference(launchDate).inDays ~/ 365;//  ~/表示整除，difference表示时间差，day表示是获得天数
       print('Launched: $launchYear ($years years ago)');
     } else {
       print('Unlaunched');
@@ -104,9 +108,21 @@ class Spacecraft {
 }
 
 //扩展类（继承），https://dart.cn/samples#inheritance
+//开发是先写子类，再抽取共同点集成父类，所以说是扩展而不是继承
 class Orbiter extends Spacecraft {
   double altitude;
 
   Orbiter(String name, DateTime launchDate, this.altitude)
       : super(name, launchDate);
+
+  //方法重写叫重载
+}
+
+//Mixins,https://dart.cn/samples#mixins
+//注入，可以让类添加功能
+mixin Piloted {
+  int astronauts = 1;
+  void describeCrew() {
+    print('Number of astronauts:$astronauts');
+  }
 }
