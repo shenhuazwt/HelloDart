@@ -28,7 +28,7 @@ void dart_num_numbers_collections_string_and_more() {
   assert(42.toString() == '42');
   assert(123.456.toString() == '123.456');
   assert(123.456.toStringAsFixed(2) == '123.46');
-  assert(123.456.toStringAsFixed(2) == '1.2e+2');
+  assert(123.456.toStringAsPrecision(2) == '1.2e+2');
   assert(double.parse('1.2e+2') == 120.0);
 
   //字符和正则表达式 https://dart.cn/guides/libraries/library-tour#strings-and-regular-expressions
@@ -82,7 +82,7 @@ void dart_num_numbers_collections_string_and_more() {
   //Trimming 和空字符串
   //使用 trim() 移除首尾空格。使用 isEmpty 检查一个字符串是否为空（长度为 0）
   // Trim a string.
-  assert(' hello '.trim == 'hello');
+  assert(' hello '.trim() == 'hello');
   // Check whether a string is empty.
   assert(''.isEmpty);
   // Strings with only white space are not empty.
