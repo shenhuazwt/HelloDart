@@ -139,9 +139,195 @@ void dart_num_numbers_collections_string_and_more() {
   print('dart_num_numbers_collections_string_and_more is OK');
 }
 
+// 集合 (https://dart.cn/guides/libraries/library-tour#collections)
 
+//lists 可以通过字面量来创建和初始化。另外，也可以使用 List 的构造函数。 List 类还定义了若干方法，用于向列表添加或删除项目。
+void the_lists() {
+  // Create an empty list of strings.
+  var grains = <String>[];
+  assert(grains.isEmpty);
+
+  // Create a list using a list literal.
+  var fruits = ['apples', 'oranges'];
+
+  // Add to a list.
+  fruits.add('kiwis');
+
+  // Add multiple items to a list.
+  fruits.addAll(['grapes', 'bananas']);
+
+  // Get the list length.
+  assert(fruits.length == 5);
+
+  // Remove a single item.
+  var appleIndex = fruits.indexOf('apples');
+  fruits.removeAt(appleIndex);
+  assert(fruits.length == 4);
+
+  // Remove all elements from a list.
+  fruits.clear();
+  assert(fruits.isEmpty);
+
+  // You can also create a List using one of the constructors.
+  var vegetables = List.filled(99, 'broccoli');
+  assert(vegetables.every((v) => v == 'broccoli'));
+
+  //使用 indexOf() 方法查找一个对象在 list 中的下标值。
+
+  fruits = ['apples', 'oranges'];
+
+  // Access a list item by index.
+  assert(fruits[0] == 'apples');
+
+  // Find an item in a list.
+  assert(fruits.indexOf('apples') == 0);
+
+  fruits.clear();
+
+  //使用 sort() 方法排序一个 list 。
+  fruits = ['bananas', 'apples', 'oranges'];
+
+  //Sort a list
+  fruits.sort((a, b) => a.compareTo(b));
+  assert(fruits[0] == 'apples');
+
+  //列表是参数化类型（泛型），因此可以指定 list 应该包含的元素类型
+
+  // This list should contain only strings.
+
+  fruits = <String>[];
+  fruits.add('apples');
+
+  var fruit = fruits[0];
+  assert(fruit is String);
+
+  //fruits.add(5);
+  //assert(fruit is String);
+  // Error: 'int' can't be assigned to 'String'
+  print('the_list is OK');
+}
+
+void the_sets() {
+  //在 Dart 中，set 是一个无序的，元素唯一的集合
+  //因为一个 set 是无序的，所以无法通过下标（位置）获取 set 中的元素
+  // Create an empty set of strings
+  var ingredients = <String>{};
+
+  // Add new items to it.
+  ingredients.addAll(['gold', 'titanium', 'xenon']);
+  assert(ingredients.length == 3);
+
+  // Adding a duplicate item has no effect.
+  ingredients.add('gold');
+  assert(ingredients.length == 3); //集合要保持单一性，多个只存在一个
+
+  ingredients.add('apples');
+  assert(ingredients.length == 4); //测试上述思考
+  print('ingredients:$ingredients');
+
+  ingredients.remove('apples');
+
+  // Remove an item from a set.
+  ingredients.remove('gold');
+  assert(ingredients.length == 2);
+
+  // You can also create sets using
+  // one of the constructors.
+  var atomicNumbers = Set.from([79, 22, 54]);
+
+  //使用 contains() 和 containsAll() 来检查一个或多个元素是否在 set 中
+  ingredients = Set<String>();
+
+  ingredients.addAll(['gold', 'titanium', 'xenon']);
+
+  // Check whether an item is in the set.
+  assert(ingredients.contains('titanium'));
+  // Check whether all the items are in the set.
+  assert(ingredients.containsAll(['titanium', 'xenon']));
+
+  //交集是另外两个 set 中的公共元素组成的 set
+  ingredients = Set<String>();
+  ingredients.addAll(['gold', 'titanium', 'xenon']);
+
+  // Create the intersection of two sets.
+  var nobleGases = Set.from(['xenon', 'argon']);
+  var intersection = ingredients.intersection(nobleGases);
+  assert(intersection.length == 1);
+  assert(intersection.contains('xenon'));
+
+  print('The test of the_set is OK');
+}
+
+void the_maps() {
+  // Maps often use strings as keys.
+  var hawaiianBeaches = {
+    'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+    'Big Island': ['Wailea Bay', 'Pololu Beach'],
+    'Kauai': ['Hanalei', 'Poipu']
+  };
+
+  // Maps can be built from a constructor.
+  var searchTerms = Map();
+
+  // Maps are parameterized types; you can specify what
+  // types the key and value should be.
+  var nobleGases = Map<int, String>();
+
+  //通过大括号语法可以为 map 添加，获取，设置元素。使用 remove() 方法从 map 中移除键值对
+  nobleGases = {54: 'xenon'};
+
+  // Retrieve a value with a key.
+  assert(nobleGases[54] == 'xenon');
+
+  // Check whether a map contains a key.
+  assert(nobleGases.containsKey(54));
+
+  // Remove a key and its value.
+  nobleGases.remove(54);
+  assert(!nobleGases.containsKey(54));
+
+  //now the nobleGases is null
+
+  hawaiianBeaches = {
+    'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+    'Big Island': ['Wailea Bay', 'Pololu Beach'],
+    'Kauai': ['Hanalei', 'Poipu']
+  };
+
+  // Get all the keys as an unordered collection
+  // (an Iterable).
+  var keys = hawaiianBeaches.keys;
+
+  assert(keys.length == 3);
+  assert(Set.from(keys).contains('Oahu'));
+
+  // Get all the values as an unordered collection
+  // (an Iterable of Lists).
+  var values = hawaiianBeaches.values;
+  assert(values.length == 3);
+  assert(values.any((v) => v.contains('Waikiki')));
+}
+
+void collections() {
+  print('\n');
+  print('*' * 40);
+  print('集合');
+  print('*' * 40);
+
+  //数表list
+  the_lists();
+
+  //sets
+  the_sets();
+
+  //maps
+  the_maps();
+}
 
 void main(List<String> args) {
   //数字、集合、字符串等
   dart_num_numbers_collections_string_and_more();
+
+  // 集合
+  collections();
 }
