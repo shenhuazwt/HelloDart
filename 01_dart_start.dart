@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 //导入（Import），https://dart.cn/samples#imports
 // Importing core libraries
 //import 'dart:math';
@@ -5,21 +8,6 @@
 //import 'package:test/test.dart';
 // Importing files
 //import 'path/to/my_other_file.dart';
-
-//你好，世界，https://dart.cn/samples#hello-world
-void main() {
-  print('Hello,World!');
-  varible();
-  var result = fibonacci(20);
-  print('fibonacci(20)=$result');
-
-  print('类的使用！');
-  var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
-  voyager.describe();
-  var voyager3 = Spacecraft.unlaunched('Voyager III');
-  voyager3.describe();
-  print('a');
-}
 
 //变量均适合使用var，https://dart.cn/samples#variables
 void varible() {
@@ -79,7 +67,7 @@ int fibonacci(int n) {
 //类是归纳出来，先有对象，后有类
 class Spacecraft {
   String name;
-  DateTime? launchDate;//‘？’用来让空不报错，不一定有，所以要防止报错
+  DateTime? launchDate; //‘？’用来让空不报错，不一定有，所以要防止报错
 
   // Read-only non-final property
   int? get launchYear => launchDate?.year;
@@ -99,7 +87,8 @@ class Spacecraft {
     // Type promotion doesn't work on getters.
     var launchDate = this.launchDate;
     if (launchDate != null) {
-      int years = DateTime.now().difference(launchDate).inDays ~/ 365;//  ~/表示整除，difference表示时间差，day表示是获得天数
+      int years = DateTime.now().difference(launchDate).inDays ~/
+          365; //  ~/表示整除，difference表示时间差，day表示是获得天数
       print('Launched: $launchYear ($years years ago)');
     } else {
       print('Unlaunched');
@@ -125,4 +114,186 @@ mixin Piloted {
   void describeCrew() {
     print('Number of astronauts:$astronauts');
   }
+}
+
+class PilotedCraft extends Spacecraft with Piloted {
+  PilotedCraft(String name, DateTime launchDate) : super(name, launchDate);
+}
+
+void Mixins() {
+  print('\n');
+  print('*' * 40);
+  print('Mixins');
+  print('*' * 40);
+
+  var test = PilotedCraft('天宫一号', DateTime(2004, 12, 13));
+
+  test.describe();
+  test.describeCrew();
+}
+
+//接口和抽象类 https://dart.cn/samples#interfaces-and-abstract-classes
+class MockSpaceship implements Spacecraft {
+  @override
+  DateTime? launchDate;
+
+  @override
+  String name;
+
+  MockSpaceship(this.name, this.launchDate);
+
+  @override
+  void describe() {
+    print('Mock Spacecraft:$name');
+  }
+
+  @override
+  int? get launchYear => launchDate?.year;
+}
+
+void interface_and_abstract_classes() {
+  print('\n');
+  print('*' * 40);
+  print('接口和抽象类');
+  print('*' * 40);
+
+  var mock = MockSpaceship('飞行器', DateTime(1997, 11, 11));
+
+  mock.describe();
+}
+
+//异步 https://dart.cn/samples#async
+Future<void> the_async() async {
+  print('\n');
+  print('*' * 40);
+  print('异步');
+  print('*' * 40);
+
+  const oneSecond = Duration(seconds: 1);
+
+  Future<void> printWithDelay1(String message) async {
+    await Future.delayed(oneSecond);
+    print(message);
+  }
+
+  printWithDelay1('过了1秒钟. 1');
+  print('done 1.');
+
+  Future<void> printWithDelay2(String message) {
+    return Future.delayed(oneSecond).then((_) {
+      print(message);
+    });
+  }
+
+  printWithDelay2('过了1秒钟. 2');
+  print('done 2.');
+
+  Future<void> createDescriptions(Iterable<String> objects) async {
+    for (final object in objects) {
+      try {
+        var file = File('$object.txt');
+        if (await file.exists()) {
+          var modified = await file.lastModified();
+          print(
+              'File for $object already exists. It was modified on $modified.');
+          continue;
+        }
+        await file.create();
+        await file.writeAsString('Start Describing $object in this file.');
+        print('File for $object created.');
+      } on IOException catch (e) {
+        print('Cannot create description for $object: $e');
+      }
+    }
+  }
+
+  var the_objects = ['高铁', '动车', '火车'];
+  createDescriptions(the_objects);
+
+  printWithDelay1('5秒后进入下一步');
+  await Future.delayed(Duration(seconds: 5)); //5秒后结束
+}
+
+// Stream https://www.jianshu.com/p/f9af079782af
+Future<void> the_stream() async {
+  print('\n');
+  print('*' * 40);
+  print('Stream');
+  print('*' * 40);
+
+  const oneSecond = Duration(seconds: 1);
+
+  StreamController<double> ctl = StreamController<double>();
+  Stream stm = ctl.stream;
+
+  stm.listen((event) {
+    print('event from controller is: $event');
+  });
+
+  Future<void> addWithDelay(value) async {
+    await Future.delayed(oneSecond);
+    ctl.add(value);
+  }
+
+  addWithDelay(10.0);
+  addWithDelay(20.0);
+  addWithDelay(30.0);
+
+  await Future.delayed(oneSecond);
+  print('5秒后进入下一步');
+  await Future.delayed(Duration(seconds: 5));
+}
+
+// 异常 https://dart.cn/samples#exceptions
+Future<void> show_descriptions(flybyObjects) async {
+  try {
+    for (final object in flybyObjects) {
+      var description = await File('$object.txt').readAsString();
+      print(description);
+    }
+  } on IOException catch (ex) {
+    print('Could not describe object: $ex');
+  } finally {
+    flybyObjects.clear();
+  }
+}
+
+void exception() {
+  print('\n');
+  print('*' * 40);
+  print('异常');
+  print('*' * 40);
+
+  var object = {'高铁', '动车', '火车','吴杰'};
+  
+  show_descriptions(object);
+}
+
+//你好，世界，https://dart.cn/samples#hello-world
+Future<void> main(List<String> args) async{
+  print('Hello,World!');
+  varible();
+  var result = fibonacci(20);
+  print('fibonacci(20)=$result');
+
+  print('类的使用！');
+  var voyager = Spacecraft('Voyager I', DateTime(1977, 9, 5));
+  voyager.describe();
+  var voyager3 = Spacecraft.unlaunched('Voyager III');
+  voyager3.describe();
+
+  //Mixins
+  Mixins();
+
+  //接口和抽象类
+  interface_and_abstract_classes();
+
+  //异步
+  await the_async();
+
+  //stream
+  await the_stream();
+
+  //异常
+  exception();
 }
