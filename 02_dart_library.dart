@@ -260,6 +260,7 @@ void the_sets() {
 
 void the_maps() {
   // Maps often use strings as keys.
+  //map其实就是所学是hash
   var hawaiianBeaches = {
     'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
     'Big Island': ['Wailea Bay', 'Pololu Beach'],
@@ -306,6 +307,64 @@ void the_maps() {
   var values = hawaiianBeaches.values;
   assert(values.length == 3);
   assert(values.any((v) => v.contains('Waikiki')));
+
+  print('The test of the_maps is OK');
+}
+
+void CommonCollectionMethods() {
+  var coffees = <String>[];
+  var teas = ['green', 'black', 'chamomile', 'earl grey'];
+  assert(coffees.isEmpty);
+  assert(teas.isNotEmpty);
+
+  teas.forEach((tea) => print('I drink $tea'));
+
+  var hawaiianBeaches = {
+    'Oahu': ['Waikiki', 'Kailua', 'Waimanalo'],
+    'Big Island': ['Wailea Bay', 'Pololu Beach'],
+    'Kauai': ['Hanalei', 'Poipu']
+  };
+
+  hawaiianBeaches.forEach((key, value) {
+    print('I want to visit $key and swim at $value');
+  });
+
+  var loudTeas = teas.map((tea) => tea.toUpperCase());
+  loudTeas.forEach(print);
+  var loadTeas_str = loudTeas = teas.map((e) => e.toUpperCase()).toList();
+  print(loadTeas_str);
+
+  bool isDecaffeinated(String teaName) => teaName == 'chamomile';
+
+  var decaffeinatedTeas = teas.where((tea) => isDecaffeinated(tea));
+
+  assert(teas.any(isDecaffeinated));
+
+  assert(!teas.every(isDecaffeinated));
+
+  assert(decaffeinatedTeas.contains('chamomile'));
+
+  print('The test of CommonCollectionMethods is OK');
+}
+
+//URIs https://dart.cn/guides/libraries/library-tour#uris
+void EncodingAndDecoding() {
+  var uri = 'https://example.org/api?foo=some message';
+
+  var encoded = Uri.encodeFull(uri);
+  assert(encoded == 'https://example.org/api?foo=some%20message');
+
+  var decoded = Uri.decodeFull(encoded);
+  assert(uri == decoded);
+}
+
+void the_URIs() {
+  print('\n');
+  print('*' * 40);
+  print('URIs');
+  print('*' * 40);
+
+  EncodingAndDecoding();
 }
 
 void collections() {
@@ -322,6 +381,9 @@ void collections() {
 
   //maps
   the_maps();
+
+  //公共集合方法
+  CommonCollectionMethods();
 }
 
 void main(List<String> args) {
@@ -330,4 +392,7 @@ void main(List<String> args) {
 
   // 集合
   collections();
+
+  //URIs
+  the_URIs();
 }
