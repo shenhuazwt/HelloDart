@@ -1,5 +1,3 @@
-import 'dart:math';
-
 //数字、集合、字符串等 https://dart.cn/guides/libraries/library-tour#dartcore---numbers-collections-strings-and-more
 void dart_num_numbers_collections_string_and_more() {
   //控制台打印 https://dart.cn/guides/libraries/library-tour#printing-to-the-console
@@ -347,26 +345,6 @@ void CommonCollectionMethods() {
   print('The test of CommonCollectionMethods is OK');
 }
 
-//URIs https://dart.cn/guides/libraries/library-tour#uris
-void EncodingAndDecoding() {
-  var uri = 'https://example.org/api?foo=some message';
-
-  var encoded = Uri.encodeFull(uri);
-  assert(encoded == 'https://example.org/api?foo=some%20message');
-
-  var decoded = Uri.decodeFull(encoded);
-  assert(uri == decoded);
-}
-
-void the_URIs() {
-  print('\n');
-  print('*' * 40);
-  print('URIs');
-  print('*' * 40);
-
-  EncodingAndDecoding();
-}
-
 void collections() {
   print('\n');
   print('*' * 40);
@@ -386,6 +364,129 @@ void collections() {
   CommonCollectionMethods();
 }
 
+//URIs https://dart.cn/guides/libraries/library-tour#uris
+void EncodingAndDecoding() {
+  var uri = 'https://example.org/api?foo=some message';
+
+  var encoded = Uri.encodeFull(uri);
+  assert(encoded == 'https://example.org/api?foo=some%20message');
+
+  var decoded = Uri.decodeFull(encoded);
+  assert(uri == decoded);
+  print('The test of EncodingAndDecoding is OK');
+}
+
+void Encoding_and_decoding_URI_components() {
+  var uri = 'https://example.org/api?foo=some message';
+
+  var encoded = Uri.encodeComponent(uri);
+  assert(encoded == 'https%3A%2F%2Fexample.org%2Fapi%3Ffoo%3Dsome%20message');
+
+  var decoded = Uri.decodeComponent(encoded);
+  assert(uri == decoded);
+  print('The test of Encoding_and_decoding_URI_components is OK');
+}
+
+void Parsing_URIs() {
+  var uri = Uri.parse('https://example.org:8080/foo/bar#frag');
+
+  assert(uri.scheme == 'https');
+  assert(uri.host == 'example.org');
+  assert(uri.path == '/foo/bar');
+  assert(uri.fragment == 'frag');
+  assert(uri.origin == 'https://example.org:8080');
+  print('The test of Parsing_URIs is OK');
+}
+
+void Building_URIs() {
+  var uri = Uri(
+      scheme: 'https', host: 'example.org', path: '/foo/bar', fragment: 'frag');
+  assert(uri.toString() == 'https://example.org/foo/bar#frag');
+  print('The test of Building_URIs is OK');
+}
+
+void the_URIs() {
+  print('\n');
+  print('*' * 40);
+  print('URIs');
+  print('*' * 40);
+
+  EncodingAndDecoding();
+
+  Encoding_and_decoding_URI_components();
+
+  Parsing_URIs();
+
+  Building_URIs();
+}
+
+//日期和时间  (https://dart.cn/guides/libraries/library-tour#dates-and-times)
+void dates_and_times() {
+// Get the current date and time.
+  var now = DateTime.now(); //获得现在时间
+
+// Create a new DateTime with the local time zone.
+  var y2k = DateTime(2000); // January 1, 2000
+
+// Specify the month and day.
+  y2k = DateTime(2000, 1, 2); // January 2, 2000
+
+// Specify the date as a UTC time.
+  y2k = DateTime.utc(2000); // 1/1/2000, UTC
+
+// Specify a date and time in ms since the Unix epoch.
+  y2k = DateTime.fromMillisecondsSinceEpoch(946684800000, isUtc: true);
+
+// Parse an ISO 8601 date.
+  y2k = DateTime.parse('2000-01-01T00:00:00Z');
+
+// 1/1/2000, UTC
+  y2k = DateTime.utc(2000);
+  assert(y2k.millisecondsSinceEpoch == 946684800000);
+
+// 1/1/1970, UTC
+  var unixEpoch = DateTime.utc(1970);
+  assert(unixEpoch.millisecondsSinceEpoch == 0);
+
+  y2k = DateTime.utc(2000);
+
+// Add one year.
+  var y2001 = y2k.add(const Duration(days: 366));
+  assert(y2001.year == 2001);
+
+// Subtract 30 days.
+  var december2000 = y2001.subtract(const Duration(days: 30));
+  assert(december2000.year == 2000);
+  assert(december2000.month == 12);
+
+// Calculate the difference between two dates.
+// Returns a Duration object.
+  var duration = y2001.difference(y2k);
+  assert(duration.inDays == 366); // y2k was a leap year.
+  print('y2k was a leap year.');
+  print('The test of Dates_and_times is OK');
+}
+
+void Dates_and_times() {
+  print('\n');
+  print('*' * 40);
+  print('Dates_and_times');
+  print('*' * 40);
+
+  dates_and_times();
+}
+
+//异步编程
+//(https://dart.cn/guides/libraries/library-tour#dartasync---asynchronous-programming)
+void asynchronous_programming() {
+  print('\n');
+  print('*' * 40);
+  print('asynchronous_programming');
+  print('*' * 40);
+
+  dates_and_times();
+}
+
 void main(List<String> args) {
   //数字、集合、字符串等
   dart_num_numbers_collections_string_and_more();
@@ -395,4 +496,7 @@ void main(List<String> args) {
 
   //URIs
   the_URIs();
+
+  //日期和时间
+  Dates_and_times();
 }
