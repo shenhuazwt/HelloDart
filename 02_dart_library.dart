@@ -1,10 +1,12 @@
+import 'dart:math';
+
 //数字、集合、字符串等 https://dart.cn/guides/libraries/library-tour#dartcore---numbers-collections-strings-and-more
 void dart_num_numbers_collections_string_and_more() {
   //控制台打印 https://dart.cn/guides/libraries/library-tour#printing-to-the-console
   print('\n');
-  print('*' * 40);
+  print('——' * 40);
   print('数字、集合、字符串等');
-  print('*' * 40);
+  print('——' * 40);
 
   //数字https://dart.cn/guides/libraries/library-tour#numbers
 
@@ -232,6 +234,7 @@ void the_sets() {
   // You can also create sets using
   // one of the constructors.
   var atomicNumbers = Set.from([79, 22, 54]);
+  print('这是一个集合：$atomicNumbers');
 
   //使用 contains() 和 containsAll() 来检查一个或多个元素是否在 set 中
   ingredients = Set<String>();
@@ -347,9 +350,9 @@ void CommonCollectionMethods() {
 
 void collections() {
   print('\n');
-  print('*' * 40);
+  print('——' * 40);
   print('集合');
-  print('*' * 40);
+  print('——' * 40);
 
   //数表list
   the_lists();
@@ -407,9 +410,9 @@ void Building_URIs() {
 
 void the_URIs() {
   print('\n');
-  print('*' * 40);
+  print('——' * 40);
   print('URIs');
-  print('*' * 40);
+  print('——' * 40);
 
   EncodingAndDecoding();
 
@@ -422,39 +425,36 @@ void the_URIs() {
 
 //日期和时间  (https://dart.cn/guides/libraries/library-tour#dates-and-times)
 void dates_and_times() {
-// Get the current date and time.
   var now = DateTime.now(); //获得现在时间
+  print('现在时间为：$now');
 
 // Create a new DateTime with the local time zone.
+//设置一个时间
   var y2k = DateTime(2000); // January 1, 2000
 
-// Specify the month and day.
+//确切的年月日
   y2k = DateTime(2000, 1, 2); // January 2, 2000
 
-// Specify the date as a UTC time.
+//确切的UTC时间
   y2k = DateTime.utc(2000); // 1/1/2000, UTC
 
-// Specify a date and time in ms since the Unix epoch.
   y2k = DateTime.fromMillisecondsSinceEpoch(946684800000, isUtc: true);
 
-// Parse an ISO 8601 date.
   y2k = DateTime.parse('2000-01-01T00:00:00Z');
 
-// 1/1/2000, UTC
   y2k = DateTime.utc(2000);
   assert(y2k.millisecondsSinceEpoch == 946684800000);
 
-// 1/1/1970, UTC
   var unixEpoch = DateTime.utc(1970);
   assert(unixEpoch.millisecondsSinceEpoch == 0);
 
   y2k = DateTime.utc(2000);
 
-// Add one year.
+// 时间加上一年
   var y2001 = y2k.add(const Duration(days: 366));
   assert(y2001.year == 2001);
 
-// Subtract 30 days.
+// 减去三十天
   var december2000 = y2001.subtract(const Duration(days: 30));
   assert(december2000.year == 2000);
   assert(december2000.month == 12);
@@ -469,25 +469,90 @@ void dates_and_times() {
 
 void Dates_and_times() {
   print('\n');
-  print('*' * 40);
+  print('——' * 40);
   print('Dates_and_times');
-  print('*' * 40);
+  print('——' * 40);
 
   dates_and_times();
 }
 
-//异步编程
-//(https://dart.cn/guides/libraries/library-tour#dartasync---asynchronous-programming)
-void asynchronous_programming() {
-  print('\n');
-  print('*' * 40);
-  print('asynchronous_programming');
-  print('*' * 40);
+//dart:math - 数学和随机数
+//（https://dart.cn/guides/libraries/library-tour#dartmath---math-and-random）
 
-  dates_and_times();
+//三角函数 https://dart.cn/guides/libraries/library-tour#trigonometry
+void Trigonometry() {
+  //Math 库提供基本的三角函数：
+
+  // Cosine
+  assert(cos(pi) == -1.0);
+  var cos_pi = cos(pi);
+  print('cos(Π)=$cos_pi');
+  // Sine
+  var degrees = 30;
+  var radians = degrees * (pi / 180);
+  //弧度是0.52359.
+  var sinOf30degrees = sin(radians);
+  print('sin(30°)=$sinOf30degrees');
+  //sin 30° = 0.5
+  assert((sinOf30degrees - 0.5).abs() < 0.01);
+  if ((sinOf30degrees - 0.5).abs() < 0.01) {
+    print('sin(30°)=0.5');
+  }
+}
+
+//最大值和最小值 https://dart.cn/guides/libraries/library-tour#maximum-and-minimum
+void Maximum_and_minimum() {
+  //可以用max或min来求最值，函数在Math库里面
+  assert(max(1, 1000) == 1000);
+  var max_number = max(1, 1000);
+  print('1和1000两数中较大者为：$max_number');
+
+  assert(min(1, -1000) == -1000);
+  var min_number = min(1, 1000);
+  print('1和1000两数中较小者为：$min_number');
+}
+
+//数学常数 https://dart.cn/guides/libraries/library-tour#math-constants
+void Math_constants() {
+  print('规定常数e为：');
+  print(e); // 2.718281828459045
+  print('规定常数Π为：');
+  print(pi); // 3.141592653589793
+  print('规定常数根号2为：');
+  print(sqrt2); // 1.4142135623730951
+}
+
+//随机数 https://dart.cn/guides/libraries/library-tour#random-numbers
+void Random_numbers() {
+  //使用 Random 类产生随机数。可以为 Random 构造函数提供一个可选的种子参数。
+  var random = Random();
+  var random1 = random.nextDouble(); // Between 0.0 and 1.0: [0, 1)
+  print(random1);
+  var random2 = random.nextInt(10); // Between 0 and 9.
+  print(random2);
+
+  //也可以产生随机布尔值序列：
+  var random3 = random.nextBool(); // true or false
+  print(random3);
+}
+
+void dart_math() {
+  print('\n');
+  print('——' * 40);
+  print('dart_math - 数学和随机数');
+  print('——' * 40);
+
+  Maximum_and_minimum();
+  Math_constants();
+  Random_numbers();
+  print('dart_math - 数学和随机数测试完成');
 }
 
 void main(List<String> args) {
+  print('==' * 40);
+  print('\n学习常用函数库\n');
+  print('==' * 40);
+
   //数字、集合、字符串等
   dart_num_numbers_collections_string_and_more();
 
@@ -499,4 +564,11 @@ void main(List<String> args) {
 
   //日期和时间
   Dates_and_times();
+
+  //数学和随机数
+  dart_math();
+
+  print('==' * 40);
+  print('\n学习完成了\n');
+  print('==' * 40);
 }
